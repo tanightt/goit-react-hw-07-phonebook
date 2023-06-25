@@ -43,7 +43,7 @@ export class ContactForm extends Component {
           type="tel"
           name="number"
           pattern="^\d{3}(-?\d{2}){1,2}$"
-          title="Phone number must be in the format 123-45-789 or 12345789"
+          title="Phone number should contain seven digits. For example 123-45-67 or 1234567."
           value={number}
           required
         />
