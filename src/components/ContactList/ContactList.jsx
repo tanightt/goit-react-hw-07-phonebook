@@ -1,13 +1,26 @@
 import { styled } from 'styled-components';
-import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectContacts, selectFilter } from 'components/redux/selectors';
+import { deleteContact } from 'components/redux/contactSlice';
 
-export const ContactList = ({ contacts, handleDelete }) => {
+export const ContactList = () => {
+  const dispatch = useDispatch();
+  const contacts = useSelector(selectContacts);
+  const filter = useSelector(selectFilter);
+
+  const contactsFilter = contacts.filter(contact =>
+    contact.name.toLowerCase().includes(filter.toLowerCase())
+  );
+
   return (
     <ul>
-      {contacts.map(contact => (
+      {contactsFilter.map(contact => (
         <li key={contact.id}>
           {contact.name}: {contact.number}
-          <DeleteBtn type="button" onClick={() => handleDelete(contact.id)}>
+          <DeleteBtn
+            type="button"
+            onClick={() => dispatch(deleteContact(contact.id))}
+          >
             Delete
           </DeleteBtn>
         </li>
@@ -18,19 +31,15 @@ export const ContactList = ({ contacts, handleDelete }) => {
 
 const DeleteBtn = styled.button`
   width: 50px;
-  margin-top: 5px;
-  margin-left: 5px;
+  margin-top: 10px;
+  margin-left: 10px;
+  padding: 2px;
   border-radius: 5px;
-  border-color: initial;
-`;
+  border-color: #354cc0;
+  cursor: pointer;
 
-ContactList.propTypes = {
-  contacts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string,
-      name: PropTypes.string,
-      number: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    })
-  ),
-  handleDelete: PropTypes.func,
-};
+  &:hover {
+    background-color: #354cc0;
+    color: white;
+  }
+`;

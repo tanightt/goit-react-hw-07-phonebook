@@ -1,6 +1,17 @@
-import PropTypes from 'prop-types';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { filterContact } from 'components/redux/filterSlice';
 
-export const Filter = ({ filter, handleChangeValue }) => {
+export const Filter = () => {
+  const [filter, setFilter] = useState('');
+  const dispatch = useDispatch();
+
+  const handleChangeValue = event => {
+    const { value } = event.target;
+    setFilter(value);
+    dispatch(filterContact(value));
+  };
+
   return (
     <>
       <h3>Find contacts by name</h3>
@@ -12,9 +23,4 @@ export const Filter = ({ filter, handleChangeValue }) => {
       />
     </>
   );
-};
-
-Filter.propTypes = {
-  filter: PropTypes.string,
-  handleChangeValue: PropTypes.func,
 };

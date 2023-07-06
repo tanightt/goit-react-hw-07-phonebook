@@ -1,9 +1,15 @@
 import { useState } from 'react';
+import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
 import { StyledBtn, StyledForm } from './ContactForm.styled';
+import { addContact } from 'components/redux/contactSlice';
+import { selectContacts } from 'components/redux/selectors';
 
-export const ContactForm = ({ handleSubmit }) => {
+export const ContactForm = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const dispatch = useDispatch();
+  const contacts = useSelector(selectContacts);
 
   const handleChangeValue = event => {
     const { name, value } = event.target;
@@ -16,7 +22,16 @@ export const ContactForm = ({ handleSubmit }) => {
 
   const handleFormSubmit = e => {
     e.preventDefault();
-    handleSubmit({ name, number });
+    const isDuplicate = contacts.some(
+      contact => contact.name.toLowerCase() === name.toLowerCase()
+    );
+
+    if (isDuplicate) {
+      toast.info(`${name} is already in contacts!`);
+      resetForm();
+      return;
+    }
+    dispatch(addContact(name, number));
     resetForm();
   };
 
