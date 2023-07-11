@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { StyledBtn, StyledForm } from './ContactForm.styled';
-import { addContact } from 'components/redux/contactSlice';
 import { selectContacts } from 'components/redux/selectors';
+import { addContactThunk } from 'components/redux/operations';
 
 export const ContactForm = () => {
   const [name, setName] = useState('');
@@ -31,7 +31,7 @@ export const ContactForm = () => {
       resetForm();
       return;
     }
-    dispatch(addContact(name, number));
+    dispatch(addContactThunk(name, number));
     resetForm();
   };
 
