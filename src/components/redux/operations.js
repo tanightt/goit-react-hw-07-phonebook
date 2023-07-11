@@ -1,43 +1,44 @@
+import { createAsyncThunk, nanoid } from '@reduxjs/toolkit';
 import axios from 'axios';
-import {
-  addContact,
-  deleteContact,
-  fetchAll,
-  setError,
-  setLoading,
-} from './contactSlice';
-import { toast } from 'react-toastify';
-import { nanoid } from '@reduxjs/toolkit';
 
 axios.defaults.baseURL = 'https://64ac593a9edb4181202f765e.mockapi.io';
 
-export const fetchContacts = () => async dispatch => {
-  try {
-    dispatch(setLoading(true));
-    const { data } = await axios.get('/contacts');
-    dispatch(fetchAll(data));
-    dispatch(setLoading(false));
-  } catch (error) {
-    dispatch(setError(error.message));
+export const fetchContacts = createAsyncThunk(
+  'contacts/fetchAll',
+  async (_, thunkAPI) => {
+    try {
+      const { data } = await axios.get('/contacts');
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
   }
-};
+);
 
-export const addContactThunk = (name, number) => async dispatch => {
-  try {
-    const { data } = await axios.post('/contacts', {
-      id: nanoid(),
-      name,
-      number,
-    });
-    dispatch(addContact(data));
-  } catch (error) {}
-};
-
-export const deleteContactThunk = id => async dispatch => {
-  try {
-    await axios.delete(`/contacts/${id}`);
-    dispatch(deleteContact(id));
-  } catch (error) {
-    toast.error('server error');
+export const addContact = createAsyncThunk(
+  'contacts/addContact',
+  async ({ name, number }, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.post('/contacts', {
+        id: nanoid(),
+        name,
+        phone: number,
+      });
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
   }
-};
+);
+
+export const deleteContact = createAsyncThunk(
+  'contacts/deleteContact',
+  async (id, { rejectWithValue }) => {
+    try {
+      await axios.delete(`/contacts/${id}`);
+      return id;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);

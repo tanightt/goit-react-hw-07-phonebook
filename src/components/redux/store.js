@@ -5,6 +5,6 @@ import { filterReducer } from './filterSlice';
 export const store = configureStore({
   reducer: {
     contacts: contactReducer,
-    filterValue: filterReducer,
+    filter: filterReducer,
   },
 });
