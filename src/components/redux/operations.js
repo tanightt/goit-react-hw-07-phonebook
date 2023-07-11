@@ -17,12 +17,12 @@ export const fetchContacts = createAsyncThunk(
 
 export const addContact = createAsyncThunk(
   'contacts/addContact',
-  async ({ name, number }, { rejectWithValue }) => {
+  async ({ name, phone }, { rejectWithValue }) => {
     try {
       const { data } = await axios.post('/contacts', {
         id: nanoid(),
         name,
-        phone: number,
+        phone,
       });
       return data;
     } catch (error) {

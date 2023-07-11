@@ -7,7 +7,7 @@ import { addContact } from 'components/redux/operations';
 
 export const ContactForm = () => {
   const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [phone, setPhone] = useState('');
   const dispatch = useDispatch();
   const contacts = useSelector(selectContacts);
 
@@ -16,7 +16,7 @@ export const ContactForm = () => {
     if (name === 'name') {
       setName(value);
     } else if (name === 'number') {
-      setNumber(value);
+      setPhone(value);
     }
   };
 
@@ -27,17 +27,20 @@ export const ContactForm = () => {
     );
 
     if (isDuplicate) {
-      toast.info(`${name} is already in contacts!`);
+      toast.info(`${name} is already in contacts!`, { theme: 'dark' });
       resetForm();
       return;
     }
-    dispatch(addContact({ name, phone: number }));
+    dispatch(addContact({ name, phone }));
+    toast.success(`${name} is added to the contacts!`, {
+      theme: 'dark',
+    });
     resetForm();
   };
 
   const resetForm = () => {
     setName('');
-    setNumber('');
+    setPhone('');
   };
 
   return (
@@ -59,7 +62,7 @@ export const ContactForm = () => {
         name="number"
         pattern="^\d{3}(-?\d{2}){1,2}$"
         title="Phone number should contain seven digits. For example 123-45-67 or 1234567."
-        value={number}
+        value={phone}
         required
       />
       <StyledBtn type="submit">Add contact</StyledBtn>

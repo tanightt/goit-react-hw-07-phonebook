@@ -1,8 +1,8 @@
-import { styled } from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { deleteContact, fetchContacts } from 'components/redux/operations';
 import { selectContacts, selectFilter } from 'components/redux/selectors';
+import { DeleteBtn } from './ContactList.styled';
 
 export const ContactList = () => {
   const dispatch = useDispatch();
@@ -31,18 +31,3 @@ export const ContactList = () => {
     </ul>
   );
 };
-
-const DeleteBtn = styled.button`
-  width: 50px;
-  margin-top: 10px;
-  margin-left: 10px;
-  padding: 2px;
-  border-radius: 5px;
-  border-color: #354cc0;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #354cc0;
-    color: white;
-  }
-`;
