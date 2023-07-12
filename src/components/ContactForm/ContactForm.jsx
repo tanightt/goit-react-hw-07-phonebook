@@ -31,10 +31,19 @@ export const ContactForm = () => {
       resetForm();
       return;
     }
-    dispatch(addContact({ name, phone }));
-    toast.success(`${name} is added to the contacts!`, {
-      theme: 'dark',
-    });
+    dispatch(addContact({ name, phone }))
+      .unwrap()
+      .then(() => {
+        toast.success(`${name} is added to the contacts!`, {
+          theme: 'dark',
+        });
+      })
+      .catch(() => {
+        toast.error('Server error', {
+          theme: 'dark',
+        });
+      });
+
     resetForm();
   };
 
